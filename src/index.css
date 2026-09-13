@@ -1,0 +1,51 @@
+@import "tailwindcss";
+
+@theme {
+  /* Primary brand — violet, matching the reference design */
+  --color-brand: #7c3aed;
+  --color-brand-dark: #6425c9;
+  --color-brand-light: #f3edfe;
+  --color-brand-100: #ede4fd;
+  --color-brand-200: #ddccfb;
+
+  /* Ink / neutrals */
+  --color-ink: #17141f;
+  --color-ink-light: #6b6577;
+
+  /* Soft surfaces used for hero + alt sections */
+  --color-surface-soft: #f7f5fc;
+  --color-surface-tint: #efe9fb;
+}
+
+* {
+  font-family: "Inter", ui-sans-serif, system-ui, -apple-system, sans-serif;
+}
+
+/* Smooth scroll for anchor links */
+html {
+  scroll-behavior: smooth;
+}
+
+/* TradingView widget full width */
+.tradingview-widget-container {
+  width: 100%;
+}
+.tradingview-widget-container__widget {
+  width: 100%;
+}
+
+/* Subtle grid backdrop used behind the hero, echoing the reference site */
+.grid-backdrop {
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.09) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.09) 1px, transparent 1px);
+  background-size: 42px 42px;
+}
+
+/* Accordion chevron rotation */
+.accordion-chevron {
+  transition: transform 0.2s ease;
+}
+.accordion-open .accordion-chevron {
+  transform: rotate(180deg);
+}

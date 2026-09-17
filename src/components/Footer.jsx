@@ -11,18 +11,18 @@ export default function Footer() {
             <h3 className="text-base font-bold text-ink mb-3">Primebulls Financial<br />Services Pvt. Ltd.</h3>
 
             <p className="text-xs font-semibold text-ink-light mt-4">GST</p>
-            <p className="text-sm text-gray-600">09PBFSX1234K1ZQ</p>
+            <p className="text-sm text-gray-600">07BENPV0572A1ZH</p>
 
             <p className="text-xs font-semibold text-ink-light mt-3">CIN</p>
             <p className="text-sm text-gray-600">U67190DL2019PTC345678</p>
 
             <a href="mailto:contact@primebulls.live" className="flex items-center gap-2 text-sm text-gray-600 hover:text-brand mt-3">
               <svg className="h-4 w-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>
-              contact@primebulls.live
+              contact@primebulls.in
             </a>
-            <a href="tel:+917303323443" className="flex items-center gap-2 text-sm text-gray-600 hover:text-brand mt-2">
+            <a href="tel:+918178546213" className="flex items-center gap-2 text-sm text-gray-600 hover:text-brand mt-2">
               <svg className="h-4 w-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" /></svg>
-              +91 73033 23443
+              +91 
             </a>
 
             <p className="text-sm font-semibold text-ink mt-4">Registered Office</p>

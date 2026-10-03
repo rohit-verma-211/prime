@@ -346,27 +346,30 @@ function AboutSection() {
 }
 
 // ── Trading Platform ─────────────────────────────────────────
+// ── Trading Platform ─────────────────────────────────────────
 function TradingSection() {
   return (
-    <section id="trading" className="bg-surface-soft py-20">
-      <div className="max-w-6xl mx-auto px-4 grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
-        <div className="bg-white rounded-3xl border border-gray-100 h-80 overflow-hidden order-first lg:order-last">
+    <section id="trading" className="bg-surface-soft py-14 md:py-20">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-10 items-center">
+        <div className="bg-white rounded-3xl border border-gray-100 overflow-hidden order-first lg:order-last aspect-[4/3] sm:aspect-video lg:aspect-auto lg:h-80">
           <img
             src="/mid.png"
             alt="Trading platform dashboard with charts and market data"
             className="w-full h-full object-cover"
           />
         </div>
-        <div>
-          <span className="inline-block border border-gray-200 bg-white rounded-full px-4 py-1.5 text-sm font-medium text-gray-500 mb-4">Trading Platform</span>
-          <h2 className="text-4xl md:text-5xl font-extrabold text-ink mb-4">
+        <div className="text-center lg:text-left">
+          <span className="inline-block border border-gray-200 bg-white rounded-full px-4 py-1.5 text-sm font-medium text-gray-500 mb-4">
+            Trading Platform
+          </span>
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-ink mb-4">
             Execute with <span className="text-brand">precision and speed</span>
           </h2>
-          <p className="text-gray-600 mb-6 max-w-md text-lg">
+          <p className="text-gray-600 mb-6 max-w-md mx-auto lg:mx-0 text-base sm:text-lg">
             A professional-grade platform built for active traders — sub-millisecond order routing,
             institutional-quality data, and a workspace that adapts to your strategy.
           </p>
-          <ul className="space-y-3 mb-8">
+          <ul className="space-y-3 mb-8 text-left max-w-md mx-auto lg:mx-0">
             {[
               "Level II market depth and streaming news feeds",
               "Smart order routing with algorithmic execution",
@@ -379,7 +382,7 @@ function TradingSection() {
               </li>
             ))}
           </ul>
-          <button className="px-6 py-3.5 bg-brand text-white rounded-full text-base font-semibold hover:bg-brand-dark transition">
+          <button className="w-full sm:w-auto px-6 py-3.5 bg-brand text-white rounded-full text-base font-semibold hover:bg-brand-dark transition">
             Launch Platform
           </button>
         </div>
@@ -387,7 +390,6 @@ function TradingSection() {
     </section>
   );
 }
-
 // ── Key Benefits ─────────────────────────────────────────────
 const BENEFITS = [
   { icon: "⚡", title: "Instant account opening", desc: "Get onboarded digitally in minutes — no branch visits, no waiting." },

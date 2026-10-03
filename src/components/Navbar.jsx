@@ -54,74 +54,94 @@ export default function Navbar() {
   };
 
   return (
-    <nav className="bg-white sticky w-full top-0 left-0 text-ink z-50 border-b border-gray-100">
-      <div className="w-full flex justify-between items-center gap-4 px-5 py-3.5 max-w-[1400px] mx-auto">
+    <nav className="bg-white sticky w-full top-0 left-0 text-ink z-50 shadow-[0_1px_0_0_rgba(0,0,0,0.06),0_2px_10px_-6px_rgba(17,17,17,0.08)]">
+      <div className="w-full flex justify-between items-center gap-4 px-5 py-3 max-w-[1400px] mx-auto">
 
         {/* Logo */}
-        <Link to="/" className="flex items-center space-x-2 flex-shrink-0">
-          <div className="h-9 w-9 rounded-xl flex items-center justify-center bg-brand flex-shrink-0">
-            <span className="text-white font-bold text-xs">PB</span>
-          </div>
-          <span className="text-xl font-bold text-ink">Primebulls</span>
+        <Link to="/" className="flex items-center space-x-2 flex-shrink-0 -my-3">
+          <img
+            src="logo.jpeg"
+            alt="Primebulls"
+            className="h-20 w-auto flex-shrink-0 object-contain"
+          />
         </Link>
 
-        {/* Desktop Nav */}
-        <div className="hidden xl:flex items-center gap-6 flex-shrink-0">
+        {/* Desktop Nav — tab-style active indicator like Wethonic's underlined "Home" */}
+        <div className="hidden xl:flex items-center gap-1 flex-shrink-0">
           {links.map(l => {
             const active = l.match(location.pathname);
             return (
               <Link
                 key={l.to}
                 to={l.to}
-                className={`text-[15px] font-medium transition ${active ? "text-brand" : "text-ink hover:text-brand"}`}
+                className={`relative px-3 py-2 text-[14.5px] font-semibold tracking-tight transition ${
+                  active ? "text-brand" : "text-ink-light hover:text-brand"
+                }`}
               >
                 {l.label}
+                <span
+                  className={`absolute left-3 right-3 -bottom-0.5 h-[2.5px] rounded-full bg-brand transition-opacity ${
+                    active ? "opacity-100" : "opacity-0"
+                  }`}
+                />
               </Link>
             );
           })}
         </div>
 
-        <div className="flex items-center gap-3 flex-shrink-0">
+        <div className="flex items-center gap-2.5 flex-shrink-0">
 
-          {/* Logged-out: pill Login button with hover dropdown */}
+          {/* Logged-out: button row, Wethonic-style — squared-off, uniform-height buttons grouped together */}
           {!user && (
-            <div
-              className="hidden md:block relative"
-              ref={loginRef}
-              onMouseEnter={openLoginMenu}
-              onMouseLeave={scheduleCloseLoginMenu}
-            >
-              <button
-                onClick={() => setLoginOpen(o => !o)}
-                className="inline-flex items-center gap-1.5 px-5 py-2.5 bg-brand text-white rounded-full text-sm font-semibold hover:bg-brand-dark transition shadow-sm"
-                aria-haspopup="true"
-                aria-expanded={loginOpen}
+            <div className="hidden md:flex items-center gap-2.5">
+              <div
+                className="relative"
+                ref={loginRef}
+                onMouseEnter={openLoginMenu}
+                onMouseLeave={scheduleCloseLoginMenu}
               >
-                Login
-                <svg
-                  className={`h-3.5 w-3.5 transition-transform ${loginOpen ? "rotate-180" : ""}`}
-                  viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="2"
+                <button
+                  onClick={() => setLoginOpen(o => !o)}
+                  className="inline-flex items-center gap-1.5 px-4 py-2 border-2 border-brand text-brand rounded-lg text-sm font-bold hover:bg-brand-light transition"
+                  aria-haspopup="true"
+                  aria-expanded={loginOpen}
                 >
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M5 7.5L10 12.5L15 7.5" />
+                  Login
+                  <svg
+                    className={`h-3.5 w-3.5 transition-transform ${loginOpen ? "rotate-180" : ""}`}
+                    viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="2"
+                  >
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M5 7.5L10 12.5L15 7.5" />
+                  </svg>
+                </button>
+
+                {loginOpen && (
+                  <div className="absolute right-0 top-full pt-2 w-52 z-50">
+                    <div className="bg-white rounded-xl shadow-lg border border-gray-100 py-2">
+                      {loginLinks.map(l => (
+                        <Link
+                          key={l.to}
+                          to={l.to}
+                          onClick={() => setLoginOpen(false)}
+                          className="block px-4 py-2 text-sm text-ink hover:bg-brand-light hover:text-brand transition"
+                        >
+                          {l.label}
+                        </Link>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              <button
+                onClick={handleTradeNow}
+                className="inline-flex items-center gap-1.5 px-4 py-2 bg-brand text-white rounded-lg text-sm font-bold shadow-sm hover:bg-brand-dark transition"
+              >
+                Trade Now
+                <svg className="h-3.5 w-3.5" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M7 13L13 7M13 7H8M13 7V12" />
                 </svg>
               </button>
-
-              {loginOpen && (
-                <div className="absolute right-0 top-full pt-2 w-52 z-50">
-                  <div className="bg-white rounded-xl shadow-lg border border-gray-100 py-2">
-                    {loginLinks.map(l => (
-                      <Link
-                        key={l.to}
-                        to={l.to}
-                        onClick={() => setLoginOpen(false)}
-                        className="block px-4 py-2 text-sm text-ink hover:bg-brand-light hover:text-brand transition"
-                      >
-                        {l.label}
-                      </Link>
-                    ))}
-                  </div>
-                </div>
-              )}
             </div>
           )}
 
@@ -135,8 +155,8 @@ export default function Navbar() {
                 {user.picture
                   ? <img src={user.picture} alt={user.name} className="h-8 w-8 rounded-full" />
                   : <div className="h-8 w-8 rounded-full bg-brand text-white flex items-center justify-center text-sm font-bold">
-                      {user.name?.[0]?.toUpperCase() || "U"}
-                    </div>
+                    {user.name?.[0]?.toUpperCase() || "U"}
+                  </div>
                 }
                 <span className="text-sm font-medium text-ink max-w-[100px] truncate">{user.name}</span>
               </button>
@@ -156,8 +176,6 @@ export default function Navbar() {
             </div>
           )}
 
-          {/* Primary CTA */}
-          
           {/* Hamburger */}
           <button
             className="xl:hidden p-2 rounded text-ink flex-shrink-0"
@@ -176,17 +194,20 @@ export default function Navbar() {
 
       {/* Mobile menu */}
       {menuOpen && (
-        <div className="lg:hidden bg-white border-t border-gray-100 text-ink px-5 py-3 space-y-1">
-          {links.map(l => (
-            <Link
-              key={l.to}
-              to={l.to}
-              className="block py-2 hover:text-brand transition text-sm font-medium"
-              onClick={() => setMenuOpen(false)}
-            >
-              {l.label}
-            </Link>
-          ))}
+        <div className="xl:hidden bg-white border-t border-gray-100 text-ink px-5 py-3 space-y-1">
+          {links.map(l => {
+            const active = l.match(location.pathname);
+            return (
+              <Link
+                key={l.to}
+                to={l.to}
+                className={`block py-2 transition text-sm font-semibold ${active ? "text-brand" : "text-ink hover:text-brand"}`}
+                onClick={() => setMenuOpen(false)}
+              >
+                {l.label}
+              </Link>
+            );
+          })}
 
           {!user && (
             <div className="pt-2 border-t border-gray-100 mt-2">
@@ -206,7 +227,7 @@ export default function Navbar() {
 
           <button
             onClick={handleTradeNow}
-            className="w-full mt-2 inline-flex items-center justify-center gap-1.5 px-5 py-2.5 bg-brand text-white rounded-full text-sm font-semibold hover:bg-brand-dark transition"
+            className="w-full mt-2 inline-flex items-center justify-center gap-1.5 px-5 py-2.5 bg-brand text-white rounded-lg text-sm font-bold shadow-sm hover:bg-brand-dark transition"
           >
             Trade Now
             <svg className="h-3.5 w-3.5" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="2">

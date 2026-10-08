@@ -2,7 +2,7 @@
 // UPDATE THESE BEFORE DEPLOYING
 // ============================================================
 
-export const WHATSAPP_NUMBER = "91XXXXXXXXXX"; // country code + number, no + (update with Primebulls' real number)
+export const WHATSAPP_NUMBER = "918178546213"; // country code + number, no + (update with Primebulls' real number)
 
 export const GOOGLE_CLIENT_ID = "YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com";
 
@@ -10,9 +10,11 @@ export const GOOGLE_CLIENT_ID = "YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.co
 // Services → Add Gmail → copy ID
 // Email Templates → Create → copy ID
 // Account → copy Public Key
-export const EMAILJS_SERVICE_ID  = "YOUR_SERVICE_ID";
-export const EMAILJS_TEMPLATE_ID = "YOUR_TEMPLATE_ID";
-export const EMAILJS_PUBLIC_KEY  = "YOUR_PUBLIC_KEY";
+export const EMAILJS_SERVICE_ID  = "service_awgsrdd";
+export const EMAILJS_TEMPLATE_ID = "template_vyil6wn";
+export const EMAILJS_PUBLIC_KEY  = "kgjscAd6KcfZim8Rx";
+export const CLOUDINARY_CLOUD_NAME = "assoekrh";
+export const CLOUDINARY_UPLOAD_PRESET = "assoekrh";
 
 // The Stocks section gets live prices from Yahoo Finance — no API key
 // needed. It goes through a free public CORS proxy (allorigins.win) so

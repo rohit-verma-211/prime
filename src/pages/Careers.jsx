@@ -3,7 +3,10 @@ import { Link } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import WhatsAppFAB from "../components/WhatsAppFAB";
-import { EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, EMAILJS_PUBLIC_KEY } from "../config";
+import {
+  EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, EMAILJS_PUBLIC_KEY,
+  CLOUDINARY_CLOUD_NAME, CLOUDINARY_UPLOAD_PRESET,
+} from "../config";
 
 // ── Job Data ─────────────────────────────────────────────────
 const JOBS = [
@@ -53,9 +56,34 @@ function useDisplayFont() {
 }
 const serif = { fontFamily: "'Fraunces', ui-serif, Georgia, serif" };
 
+// ── Upload one file to Cloudinary (unsigned) ──────────────────
+// Returns the file's public URL on Cloudinary's CDN. Throws on failure.
+async function uploadResumeToCloudinary(file) {
+  if (!CLOUDINARY_CLOUD_NAME || !CLOUDINARY_UPLOAD_PRESET) {
+    throw new Error(
+      "Cloudinary isn't configured yet — add CLOUDINARY_CLOUD_NAME and CLOUDINARY_UPLOAD_PRESET to src/config.js"
+    );
+  }
+  const data = new FormData();
+  data.append("file", file);
+  data.append("upload_preset", CLOUDINARY_UPLOAD_PRESET);
+  // "raw" resource type handles PDFs/DOCs correctly (Cloudinary's "image"
+  // endpoint will reject non-image files).
+  const res = await fetch(
+    `https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/raw/upload`,
+    { method: "POST", body: data }
+  );
+  if (!res.ok) {
+    const errBody = await res.json().catch(() => null);
+    throw new Error(errBody?.error?.message || `Cloudinary upload failed (HTTP ${res.status})`);
+  }
+  const json = await res.json();
+  return json.secure_url;
+}
+
 // ── Application Modal ────────────────────────────────────────
 function ApplyModal({ job, onClose }) {
-  const INIT = { name:"", email:"", phone:"", linkedin:"", portfolio:"", qualification:"", experience:"", cover:"", resumeName:"", resumeB64:"" };
+  const INIT = { name:"", email:"", phone:"", linkedin:"", portfolio:"", qualification:"", experience:"", cover:"", resumeName:"" };
   const [form, setForm]   = useState(INIT);
   const [status, setStatus] = useState(null);
   const fileRef = useRef();
@@ -65,10 +93,11 @@ function ApplyModal({ job, onClose }) {
   const handleFile = e => {
     const f = e.target.files[0];
     if (!f) return;
-    if (f.size > 5 * 1024 * 1024) { setStatus({ type:"error", msg:"Resume must be under 5 MB." }); return; }
-    const reader = new FileReader();
-    reader.onload = () => set("resumeB64", reader.result);
-    reader.readAsDataURL(f);
+    if (f.size > 5 * 1024 * 1024) {
+      setStatus({ type:"error", msg:"Resume must be under 5 MB." });
+      e.target.value = "";
+      return;
+    }
     set("resumeName", f.name);
     setStatus(null);
   };
@@ -79,15 +108,22 @@ function ApplyModal({ job, onClose }) {
     if (!/^\d{10}$/.test(form.phone))     return "Enter a valid 10-digit phone number.";
     if (!form.qualification)       return "Please select your qualification.";
     if (!form.experience)          return "Please select your experience level.";
+    if (!fileRef.current?.files?.[0]) return "Please attach your resume.";
     return null;
   };
 
   const handleSubmit = async () => {
     const err = validate();
     if (err) { setStatus({ type:"error", msg: err }); return; }
-    setStatus({ type:"sending", msg:"Sending your application…" });
 
     try {
+      // 1. Upload resume to Cloudinary first — we need the URL before
+      //    we can email it to the recruiter.
+      setStatus({ type:"sending", msg:"Uploading resume…" });
+      const resumeUrl = await uploadResumeToCloudinary(fileRef.current.files[0]);
+
+      // 2. Email the recruiter with the form data + the Cloudinary link.
+      setStatus({ type:"sending", msg:"Sending your application…" });
       await window.emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
         position_title:  job.label,
         position_type:   job.type,
@@ -100,13 +136,14 @@ function ApplyModal({ job, onClose }) {
         qualification:   form.qualification,
         experience:      form.experience,
         cover_letter:    form.cover     || "Not provided",
-        resume_name:     form.resumeName|| "Not attached",
+        resume_name:     form.resumeName,
+        resume_url:      resumeUrl,
         applied_on:      new Date().toLocaleString("en-IN", { timeZone:"Asia/Kolkata" }),
       });
       setStatus({ type:"success" });
     } catch (err) {
       console.error(err);
-      setStatus({ type:"error", msg:"Failed to send. Please try again or email us directly at primebulls@gmail.com" });
+      setStatus({ type:"error", msg: err.message || "Failed to send. Please try again or email us directly at primebulls@gmail.com" });
     }
   };
 
@@ -210,7 +247,7 @@ function ApplyModal({ job, onClose }) {
               {/* Resume upload */}
               <div>
                 <label className="block text-xs font-semibold text-gray-600 mb-1.5">
-                  Resume <span className="text-gray-400 font-normal">(PDF or DOC, max 5 MB)</span>
+                  Resume <span className="text-red-500">*</span> <span className="text-gray-400 font-normal">(PDF or DOC, max 5 MB)</span>
                 </label>
                 <div
                   onClick={() => fileRef.current?.click()}
@@ -254,7 +291,7 @@ function ApplyModal({ job, onClose }) {
                 disabled={status?.type === "sending"}
                 className="w-full bg-ink text-white font-medium py-3 rounded-md hover:bg-black transition disabled:opacity-60 disabled:cursor-not-allowed text-sm"
               >
-                {status?.type === "sending" ? "Sending application…" : "Submit application"}
+                {status?.type === "sending" ? status.msg : "Submit application"}
               </button>
 
               <p className="text-xs text-gray-400 text-center">

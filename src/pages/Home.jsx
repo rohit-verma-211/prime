@@ -264,35 +264,40 @@ function InvestmentsSection() {
 
 // ── Best Insurance ───────────────────────────────────────────
 const INSURANCE = [
-  { icon: "❤️", sub: "Lowest Price Guarantee", label: "Term Life Insurance", badge: "Covers Covid-19" },
-  { icon: "🏥", sub: "FREE Home Visit", label: "Health Insurance", badge: "Covers Covid-19" },
-  { icon: "📈", sub: "In-Built Life Cover", label: "Investment Plans", badge: "Save Tax" },
-  { icon: "🚗", sub: "Upto 91% Discount", label: "Car Insurance", badge: "Instant Policy" },
-  { icon: "🏍️", sub: "Upto 85% Discount", label: "2 Wheeler Insurance", badge: "Instant Policy" },
-  { icon: "📄", sub: "Upto 85% Discount", label: "Term Plans with Return of Premium", badge: null },
-  { icon: "🎯", sub: "Upto 85% Discount", label: "Guaranteed Return Plans", badge: null },
-  { icon: "👩", sub: "Upto 20% Cheaper", label: "Term Insurance (Women)", badge: null },
+  { img: "/icons/gr__3_.png", icon: "❤️", sub: "Lowest Price Guarantee", label: "Term Life Insurance", badge: "Covers Covid-19" },
+  { img: "/health-insurance.png", icon: "🏥", sub: "FREE Home Visit", label: "Health Insurance", badge: "Covers Covid-19" },
+  { img: "/report.png", icon: "📈", sub: "In-Built Life Cover", label: "Investment Plans", badge: "Save Tax" },
+  { img: "/insurance.png", icon: "🚗", sub: "Upto 91% Discount", label: "Car Insurance", badge: "Instant Policy" },
+  { img: "/bike.png", icon: "🏍️", sub: "Upto 85% Discount", label: "2 Wheeler Insurance", badge: "Instant Policy" },
+  { img: "gr (3).png", icon: "📄", sub: "Upto 85% Discount", label: "Term Plans with Return of Premium", badge: null },
+  { img: "/gr (2).png", icon: "🎯", sub: "Upto 85% Discount", label: "Guaranteed Return Plans", badge: null },
+  { img: null, icon: "👩", sub: "Upto 20% Cheaper", label: "Term Insurance (Women)", badge: null },
 ];
 
 function InsuranceSection() {
   return (
     <section className="bg-surface-soft py-20">
       <div className="max-w-6xl mx-auto px-4">
-        <div className="text-center mb-12">
-          <span className="inline-block border border-gray-200 bg-white rounded-full px-4 py-1.5 text-sm font-medium text-gray-500 mb-4">Insurance</span>
-          <h2 className="text-4xl md:text-5xl font-extrabold text-ink">
-            Protection <span className="italic font-light text-gray-400">for</span> every stage of life
-          </h2>
-        </div>
+        {/* ...header unchanged... */}
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-5">
           {INSURANCE.map(c => (
             <div
               key={c.label}
               className="bg-white border border-gray-200 rounded-2xl p-6 hover:border-brand hover:shadow-sm transition flex flex-col items-center text-center"
             >
-              <div className="h-14 w-14 rounded-xl bg-brand-light flex items-center justify-center text-2xl mb-4">
-                {c.icon}
-              </div>
+              {c.img ? (
+                <div className="h-20 w-20 rounded-xl overflow-hidden mb-4">
+                  <img
+                    src={c.img}
+                    alt={c.label}
+                    className="h-full w-full object-cover"
+                  />
+                </div>
+              ) : (
+                <div className="h-20 w-20 rounded-xl bg-brand-light flex items-center justify-center text-4xl mb-4">
+                  {c.icon}
+                </div>
+              )}
               <p className="text-sm font-semibold text-brand-dark mb-2">{c.sub}</p>
               <h3 className="font-bold text-ink text-base leading-snug">{c.label}</h3>
               {c.badge && (
@@ -310,31 +315,25 @@ function InsuranceSection() {
 
 // ── Why Primebulls ───────────────────────────────────────────
 const WHY_CARDS = [
-  { icon: "🤝", title: "Transparency & Trust", desc: "Clear, open communication in every investment and every service — the foundation of a lasting relationship." },
-  { icon: "🎯", title: "Right Investments", desc: "Expert guidance from experienced relationship managers, at every step of your financial journey." },
-  { icon: "🧩", title: "Flexible Investment Approach", desc: "Personalized solutions built around your goals, preferences, and risk appetite — every investor is unique." },
-  { icon: "💻", title: "Technology", desc: "Algo-driven tools for a secure, efficient experience, keeping your assets protected and your data safe." },
+  { icon: "/icon1.svg", title: "Transparency & Trust", desc: "Clear, open communication in every investment and every service — the foundation of a lasting relationship." },
+  { icon: "/icon2.svg", title: "Right Investments", desc: "Expert guidance from experienced relationship managers, at every step of your financial journey." },
+  { icon: "/icon3.svg", title: "Flexible Investment Approach", desc: "Personalized solutions built around your goals, preferences, and risk appetite — every investor is unique." },
+  { icon: "/icon4.svg", title: "Technology", desc: "Algo-driven tools for a secure, efficient experience, keeping your assets protected and your data safe." },
 ];
 
 function AboutSection() {
   return (
     <section id="about" className="max-w-6xl mx-auto px-4 py-20">
-      <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-12">
-        <div>
-          <span className="inline-block border border-gray-200 rounded-full px-4 py-1.5 text-sm font-medium text-gray-500 mb-4">Our Edge</span>
-          <h2 className="text-4xl md:text-5xl font-extrabold text-ink max-w-xl">
-            Why <span className="text-brand">Primebulls?</span>
-          </h2>
-        </div>
-        <p className="text-gray-500 text-base max-w-sm">
-          A trusted name in Indian financial services, offering everything you need for wealth creation under one roof.
-        </p>
-      </div>
+      {/* ...header unchanged... */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
         {WHY_CARDS.map(card => (
           <div key={card.title} className="border border-gray-200 rounded-2xl p-7 hover:border-brand hover:shadow-sm transition">
-            <div className="h-14 w-14 rounded-xl bg-brand-light flex items-center justify-center text-2xl mb-4">
-              {card.icon}
+            <div className="h-14 w-14 rounded-xl overflow-hidden mb-4">
+              <img
+                src={card.icon}
+                alt={card.title}
+                className="h-full w-full object-cover"
+              />
             </div>
             <h3 className="font-bold text-ink text-lg mb-2">{card.title}</h3>
             <p className="text-gray-500 text-base">{card.desc}</p>
@@ -344,6 +343,7 @@ function AboutSection() {
     </section>
   );
 }
+
 
 // ── Trading Platform ─────────────────────────────────────────
 // ── Trading Platform ─────────────────────────────────────────

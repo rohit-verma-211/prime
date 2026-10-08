@@ -6,33 +6,28 @@
 // itself uses. Two practical constraints shape everything below:
 //
 //   1. CORS: browsers block direct calls to query1.finance.yahoo.com
-//      from a page hosted on another domain. We route requests through
-//      a public CORS proxy (allorigins.win) so this works from a plain
-//      static site with no backend of your own. This proxy is free and
-//      unofficial — fine for a personal/demo project, but if you ship
-//      this to real users, swap PROXY_URL for your own tiny serverless
-//      function (Vercel/Netlify/Cloudflare Worker) that just forwards
-//      the request server-side. That removes the CORS problem entirely
-//      and isn't subject to a third party's uptime or rate limits.
-//   2. No official rate limit is published, but hammering it (or the
-//      proxy) is a good way to get temporarily blocked. So we still:
+//      from a page hosted on another domain.
+//        - In dev (`npm run dev`) this goes through the Vite proxy
+//          defined in vite.config.js — no CORS issue there.
+//        - In production, this now goes through OUR OWN Vercel
+//          serverless function at /api/yahoo-chart (see
+//          api/yahoo-chart.js at the project root). That function
+//          fetches Yahoo server-side, where CORS doesn't apply, so
+//          there's no third-party proxy involved anymore and nothing
+//          outside our own deployment that can go down or rate-limit
+//          us. (Previously this used the free public proxy
+//          api.allorigins.win, which is why live prices were
+//          unreliable on the deployed site — that proxy goes down /
+//          gets rate-limited independent of anything in this repo.)
+//   2. No official rate limit is published, but hammering Yahoo (or
+//      our own function) is still a good way to get temporarily
+//      throttled. So we still:
 //      - Cache every response in localStorage with a TTL (quotes: 2
 //        minutes, daily history: 24 hours).
 //      - Cap concurrent in-flight requests instead of firing 10+ at once.
 //      - Fall back to stale cache whenever a request fails, so the UI
 //        never goes blank.
 // ============================================================
-
-const PROXY_URL = "https://api.allorigins.win/raw?url=";
-
-// In dev (`npm run dev`), calls go through the Vite proxy defined in
-// vite.config.js — no CORS issue, no third-party proxy involved.
-// In a production build there's no dev server to proxy through, so we
-// fall back to the public allorigins.win CORS proxy (see the big
-// comment above) unless you've swapped in your own.
-const CHART_BASE = import.meta.env.DEV
-  ? "/yahoo-api/v8/finance/chart"
-  : "https://query1.finance.yahoo.com/v8/finance/chart";
 
 const QUOTE_TTL = 2 * 60 * 1000;        // 2 minutes
 const DAILY_TTL = 24 * 60 * 60 * 1000;  // 24 hours
@@ -41,6 +36,18 @@ const MAX_CONCURRENT = 3;
 // Yahoo needs no API key at all — kept as a no-op so callers/UI that
 // used to gate on "is a key configured" still work without changes.
 export const isApiKeyConfigured = () => true;
+
+// ── Build the request URL for one symbol ─────────────────────
+// Dev: Vite's local proxy (see vite.config.js) forwards this straight
+// to Yahoo with no CORS issue.
+// Prod: our own Vercel serverless function (api/yahoo-chart.js) does
+// the Yahoo call server-side and returns the same JSON shape.
+function buildChartUrl(yahooSymbol, range, interval) {
+  if (import.meta.env.DEV) {
+    return `/yahoo-api/v8/finance/chart/${encodeURIComponent(yahooSymbol)}?range=${range}&interval=${interval}`;
+  }
+  return `/api/yahoo-chart?symbol=${encodeURIComponent(yahooSymbol)}&range=${range}&interval=${interval}`;
+}
 
 // ── localStorage cache helpers ───────────────────────────────
 function cacheGet(key) {
@@ -90,8 +97,7 @@ function enqueue(fn, priority) {
 
 async function fetchJson(targetUrl, priority) {
   return enqueue(async () => {
-    const finalUrl = import.meta.env.DEV ? targetUrl : PROXY_URL + encodeURIComponent(targetUrl);
-    const res = await fetch(finalUrl);
+    const res = await fetch(targetUrl);
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     return res.json();
   }, priority);
@@ -110,7 +116,7 @@ export async function fetchQuote(yahooSymbol, { priority = false } = {}) {
   if (isFresh(cached, QUOTE_TTL)) return { data: cached.data, stale: false, source: "cache" };
 
   try {
-    const url = `${CHART_BASE}/${encodeURIComponent(yahooSymbol)}?range=5d&interval=1d`;
+    const url = buildChartUrl(yahooSymbol, "5d", "1d");
     const json = await fetchJson(url, priority);
     const result = getChartResult(json);
     const meta = result?.meta;
@@ -157,7 +163,7 @@ export async function fetchDailySeries(yahooSymbol, { priority = false } = {}) {
   if (isFresh(cached, DAILY_TTL)) return { data: cached.data, stale: false, source: "cache" };
 
   try {
-    const url = `${CHART_BASE}/${encodeURIComponent(yahooSymbol)}?range=5y&interval=1d`;
+    const url = buildChartUrl(yahooSymbol, "5y", "1d");
     const json = await fetchJson(url, priority);
     const result = getChartResult(json);
     const timestamps = result?.timestamp;

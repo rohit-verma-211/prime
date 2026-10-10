@@ -356,42 +356,307 @@ function AboutSection() {
 
 // ── Trading Platform ─────────────────────────────────────────
 // ── Trading Platform ─────────────────────────────────────────
+
 function TradingSection() {
+  const stocks = [
+    { symbol: "AAPL", name: "Apple Inc.", price: "$237.49", change: "+1.24%", up: true },
+    { symbol: "NVDA", name: "NVIDIA Corp.", price: "$142.87", change: "+2.86%", up: true },
+    { symbol: "TSLA", name: "Tesla Inc.", price: "$321.45", change: "-0.84%", up: false },
+  ];
+
+  const chart = [
+    72, 65, 77, 57, 62, 45, 53, 40, 49, 32, 39,
+    24, 34, 18, 28, 15, 24, 10, 18, 6, 14, 4,
+  ];
+
+  const points = chart
+    .map((y, i) => `${(i / (chart.length - 1)) * 100},${y}`)
+    .join(" ");
+
   return (
-    <section id="trading" className="bg-surface-soft py-14 md:py-20">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-10 items-center">
-        <div className="bg-white rounded-3xl border border-gray-100 overflow-hidden order-first lg:order-last aspect-[4/3] sm:aspect-video lg:aspect-auto lg:h-80">
-          <img
-            src="/mid.png"
-            alt="Trading platform dashboard with charts and market data"
-            className="w-full h-full object-cover"
-          />
+    <section
+      id="trading"
+      className="bg-surface-soft py-14 md:py-20 lg:py-24 overflow-hidden"
+    >
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-10 grid grid-cols-1 lg:grid-cols-[0.95fr_1.05fr] gap-10 lg:gap-12 items-center">
+
+        {/* Dashboard: compact and balanced */}
+        <div className="order-first lg:order-last min-w-0 flex justify-center lg:justify-end">
+          <div className="relative w-full max-w-[460px] xl:max-w-[490px]">
+
+            <div className="absolute inset-5 rounded-full bg-purple-300/30 blur-3xl" />
+
+            <div className="relative bg-white rounded-2xl border border-gray-100 shadow-[0_20px_60px_-25px_rgba(100,60,160,0.24)] overflow-hidden">
+
+              {/* Header */}
+              <div className="flex items-center justify-between px-4 py-3 border-b border-gray-100">
+                <div className="flex items-center gap-2.5">
+                  <div className="w-9 h-9 rounded-xl bg-brand flex items-center justify-center text-white">
+                    <svg viewBox="0 0 24 24" fill="none" className="w-5 h-5">
+                      <path
+                        d="M3 17l6-7 4 4 8-9M15 5h6v6"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    </svg>
+                  </div>
+                  <div>
+                    <p className="font-bold text-ink text-sm">Market Overview</p>
+                    <p className="text-[11px] text-gray-400">Trading workspace</p>
+                  </div>
+                </div>
+
+                <span className="flex items-center gap-1.5 rounded-full bg-amber-50 text-amber-700 px-2.5 py-1.5 text-[9px] font-bold">
+                  <span className="w-1.5 h-1.5 rounded-full bg-amber-500" />
+                  DEMO DATA
+                </span>
+              </div>
+
+              {/* Summary cards */}
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5 p-3">
+                <div className="bg-purple-50 rounded-xl p-3">
+                  <p className="text-[10px] text-gray-500">Portfolio value</p>
+                  <p className="text-lg font-extrabold text-ink mt-1.5">$84,250</p>
+                  <p className="text-[10px] text-emerald-600 mt-1 font-semibold">
+                    +4.82% this month
+                  </p>
+                </div>
+
+                <div className="border border-gray-100 rounded-xl p-3">
+                  <p className="text-[10px] text-gray-500">Today's return</p>
+                  <p className="text-lg font-extrabold text-emerald-600 mt-1.5">
+                    +$1,284
+                  </p>
+                  <p className="text-[10px] text-gray-400 mt-1">+1.54% today</p>
+                </div>
+
+                <div className="col-span-2 sm:col-span-1 border border-gray-100 rounded-xl p-3 flex sm:block justify-between items-center">
+                  <div>
+                    <p className="text-[10px] text-gray-500">Active positions</p>
+                    <p className="text-lg font-extrabold text-ink mt-1.5">12</p>
+                  </div>
+                  <div className="flex -space-x-1.5 sm:mt-2">
+                    {["A", "N", "T", "M"].map((letter, i) => (
+                      <span
+                        key={letter}
+                        className={`w-6 h-6 rounded-full border-2 border-white flex items-center justify-center text-[9px] font-bold text-white ${
+                          [
+                            "bg-violet-500",
+                            "bg-blue-500",
+                            "bg-rose-500",
+                            "bg-emerald-500",
+                          ][i]
+                        }`}
+                      >
+                        {letter}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              {/* Market chart */}
+              <div className="mx-3 p-3 border border-gray-100 rounded-xl">
+                <div className="flex items-start justify-between gap-2">
+                  <div>
+                    <p className="text-[11px] text-gray-500 font-medium">
+                      Market performance
+                    </p>
+                    <p className="text-xl font-extrabold text-ink mt-1">
+                      $4,286.72
+                    </p>
+                    <p className="text-[10px] font-semibold text-emerald-600 mt-1">
+                      +2.41% illustrative change
+                    </p>
+                  </div>
+
+                  <div className="flex gap-1">
+                    {["1D", "1W", "1M"].map((period, i) => (
+                      <span
+                        key={period}
+                        className={`px-2 py-1 rounded-md text-[9px] font-semibold ${
+                          i === 1
+                            ? "bg-brand text-white"
+                            : "bg-gray-50 text-gray-500"
+                        }`}
+                      >
+                        {period}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="h-28 sm:h-32 mt-4">
+                  <svg
+                    viewBox="0 0 100 100"
+                    preserveAspectRatio="none"
+                    className="w-full h-full"
+                    role="img"
+                    aria-label="Illustrative stock market trend"
+                  >
+                    <defs>
+                      <linearGradient
+                        id="tradingAreaFill"
+                        x1="0"
+                        y1="0"
+                        x2="0"
+                        y2="1"
+                      >
+                        <stop offset="0%" stopColor="#813cf5" stopOpacity=".22" />
+                        <stop offset="100%" stopColor="#813cf5" stopOpacity="0" />
+                      </linearGradient>
+                    </defs>
+
+                    {[20, 40, 60, 80].map((y) => (
+                      <line
+                        key={y}
+                        x1="0"
+                        y1={y}
+                        x2="100"
+                        y2={y}
+                        stroke="#eeeaf5"
+                        strokeWidth=".5"
+                        strokeDasharray="1.5 1.5"
+                      />
+                    ))}
+
+                    <polygon
+                      points={`0,100 ${points} 100,100`}
+                      fill="url(#tradingAreaFill)"
+                    />
+
+                    <polyline
+                      points={points}
+                      fill="none"
+                      stroke="#813cf5"
+                      strokeWidth="1.5"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      vectorEffect="non-scaling-stroke"
+                    />
+                  </svg>
+                </div>
+
+                <div className="flex justify-between text-[9px] text-gray-400 mt-2">
+                  <span>09:00</span>
+                  <span>11:00</span>
+                  <span>13:00</span>
+                  <span>15:00</span>
+                  <span>16:00</span>
+                </div>
+              </div>
+
+              {/* Watchlist */}
+              <div className="p-3">
+                <div className="flex justify-between items-center mb-2">
+                  <h3 className="font-bold text-ink text-xs">
+                    Market watchlist
+                  </h3>
+                  <span className="text-[10px] text-brand font-semibold">
+                    Market snapshot
+                  </span>
+                </div>
+
+                <div className="space-y-0.5">
+                  {stocks.map((stock) => (
+                    <div
+                      key={stock.symbol}
+                      className="grid grid-cols-[minmax(0,1fr)_auto] gap-3 items-center rounded-lg px-2 py-2 hover:bg-gray-50 transition"
+                    >
+                      <div className="flex items-center gap-2.5 min-w-0">
+                        <div className="w-8 h-8 shrink-0 rounded-lg bg-purple-50 text-brand flex items-center justify-center font-bold text-[10px]">
+                          {stock.symbol[0]}
+                        </div>
+                        <div className="min-w-0">
+                          <p className="text-xs font-bold text-ink">
+                            {stock.symbol}
+                          </p>
+                          <p className="text-[10px] text-gray-400 truncate">
+                            {stock.name}
+                          </p>
+                        </div>
+                      </div>
+
+                      <div className="text-right">
+                        <p className="text-xs font-bold text-ink">{stock.price}</p>
+                        <p
+                          className={`text-[10px] font-semibold ${
+                            stock.up ? "text-emerald-600" : "text-rose-500"
+                          }`}
+                        >
+                          {stock.change}
+                        </p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Footer */}
+              <div className="flex items-center justify-between gap-2 px-4 py-2.5 bg-gray-50 border-t border-gray-100">
+                <span className="flex items-center gap-1.5 text-[10px] text-gray-500">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+                  Workspace preview
+                </span>
+                <span className="text-[9px] text-gray-400">
+                  Illustrative data
+                </span>
+              </div>
+            </div>
+
+            {/* Floating badge */}
+            <div className="hidden sm:flex absolute -right-3 top-[28%] items-center gap-2 rounded-xl border border-white bg-white/95 shadow-lg shadow-purple-900/10 p-2.5">
+              <div className="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center">
+                ✓
+              </div>
+              <div>
+                <p className="text-[10px] font-bold text-ink">Smart execution</p>
+                <p className="text-[9px] text-gray-400">Interface preview</p>
+              </div>
+            </div>
+          </div>
         </div>
+
+        {/* Text content */}
         <div className="text-center lg:text-left">
-          <span className="inline-block border border-gray-200 bg-white rounded-full px-4 py-1.5 text-sm font-medium text-gray-500 mb-4">
+          <span className="inline-block border border-gray-200 bg-white rounded-full px-4 py-1.5 text-sm font-medium text-gray-500 mb-5">
             Trading Platform
           </span>
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-ink mb-4">
-            Execute with <span className="text-brand">precision and speed</span>
+
+          <h2 className="text-3xl sm:text-4xl xl:text-5xl font-extrabold leading-[1.12] text-ink mb-5">
+            Execute with{" "}
+            <span className="text-brand">precision and speed</span>
           </h2>
-          <p className="text-gray-600 mb-6 max-w-md mx-auto lg:mx-0 text-base sm:text-lg">
-            A professional-grade platform built for active traders — sub-millisecond order routing,
-            institutional-quality data, and a workspace that adapts to your strategy.
+
+          <p className="text-gray-600 mb-7 max-w-lg mx-auto lg:mx-0 text-base sm:text-lg leading-relaxed">
+            A professional-grade platform built for active traders — fast
+            execution, insightful market analytics, and a workspace that
+            adapts to your strategy.
           </p>
-          <ul className="space-y-3 mb-8 text-left max-w-md mx-auto lg:mx-0">
+
+          <ul className="space-y-3.5 mb-8 text-left max-w-lg mx-auto lg:mx-0">
             {[
               "Level II market depth and streaming news feeds",
               "Smart order routing with algorithmic execution",
               "100+ technical indicators and custom scripting",
               "Multi-monitor layouts synced across devices",
-            ].map(item => (
-              <li key={item} className="flex items-start gap-2 text-gray-600">
-                <span className="text-brand font-bold">✓</span>
+            ].map((item) => (
+              <li
+                key={item}
+                className="flex items-start gap-2.5 text-gray-600 text-sm sm:text-base"
+              >
+                <span className="text-brand font-bold text-lg leading-5">✓</span>
                 <span>{item}</span>
               </li>
             ))}
           </ul>
-          <button className="w-full sm:w-auto px-6 py-3.5 bg-brand text-white rounded-full text-base font-semibold hover:bg-brand-dark transition">
+
+          <button
+            type="button"
+            className="w-full sm:w-auto px-7 py-3.5 bg-brand text-white rounded-full text-base font-semibold hover:bg-brand-dark transition focus:outline-none focus:ring-2 focus:ring-brand focus:ring-offset-2"
+          >
             Launch Platform
           </button>
         </div>
@@ -399,6 +664,9 @@ function TradingSection() {
     </section>
   );
 }
+
+
+
 // ── Key Benefits ─────────────────────────────────────────────
 const BENEFITS = [
   { img: "/phone.png", title: "Instant account opening", desc: "Get onboarded digitally in minutes — no branch visits, no waiting." },

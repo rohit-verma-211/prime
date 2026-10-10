@@ -40,129 +40,114 @@ function TradingViewTicker() {
 }
 
 // ── Hero ─────────────────────────────────────────────────────
-const HERO_CARDS = [
-  {
-    heading: "Trending Stocks",
-    align: "left",
-    items: [
-      { name: "HDFC Bank", meta: "Live price • NSE", icon: "🏦", color: "bg-blue-100" },
-      { name: "Reliance Industries", meta: "Live price • NSE", icon: "🛢️", color: "bg-emerald-100" },
-    ],
-  },
-  {
-    heading: "Top Gainers",
-    align: "center",
-    featured: true,
-    items: [
-      { name: "Tata Motors", meta: "Momentum pick", icon: "🚗", color: "bg-amber-100" },
-      { name: "Infosys", meta: "Momentum pick", icon: "💻", color: "bg-indigo-100" },
-    ],
-  },
-  {
-    heading: "IPO Watch",
-    align: "right",
-    items: [
-      { name: "Next Listing", meta: "Opens soon", icon: "🆕", color: "bg-rose-100" },
-      { name: "Recently Listed", meta: "Track performance", icon: "📊", color: "bg-purple-100" },
-    ],
-  },
-];
-
 function Hero({ onPrimary }) {
   return (
-    <section className="bg-surface-soft pt-16 pb-14">
-      <div className="max-w-4xl mx-auto px-4 text-center">
-        <div className="inline-flex items-center gap-2 bg-white border border-gray-200 rounded-full px-4 py-2 text-sm font-medium text-gray-600 shadow-sm">
-          <span className="bg-brand-light text-brand rounded-full px-2.5 py-1 font-semibold">New</span>
-          Live prices, research &amp; SIP tools in one account
+    <section className="relative overflow-hidden bg-surface-soft pt-14 pb-10 sm:pt-16 lg:pt-20">
+      {/* Background glow */}
+      <div className="pointer-events-none absolute left-1/2 top-40 h-80 w-80 -translate-x-1/2 rounded-full bg-purple-300/20 blur-3xl" />
+
+      <div className="relative mx-auto max-w-7xl px-4 sm:px-6">
+        {/* Hero heading */}
+        <div className="relative z-10 mx-auto max-w-4xl text-center">
+          <div className="inline-flex max-w-full items-center justify-center gap-2 rounded-full border border-gray-200 bg-white px-3 py-2 text-xs font-medium text-gray-600 shadow-sm sm:px-4 sm:text-sm">
+            <span className="shrink-0 rounded-full bg-brand-light px-2.5 py-1 font-semibold text-brand">
+              New
+            </span>
+            <span>Live prices, research &amp; SIP tools in one account</span>
+          </div>
+
+          <h1 className="mt-6 text-4xl font-extrabold leading-[1.08] tracking-tight text-ink sm:text-5xl md:text-6xl lg:text-7xl">
+            Trade today.
+            <br />
+            <span className="font-semibold italic text-gray-400">Grow</span>{" "}
+            in the <span className="text-brand">future.</span>
+          </h1>
+
+          {/* Original buttons preserved */}
+          <div className="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
+            <Link
+              to="/stocks"
+              className="flex w-full items-center justify-center gap-2 rounded-full border-2 border-brand px-9 py-4 text-lg font-semibold text-brand transition hover:bg-brand-light sm:w-auto"
+            >
+              Explore Markets
+              <svg
+                className="h-4 w-4"
+                viewBox="0 0 20 20"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                aria-hidden="true"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M7 13L13 7M13 7H8M13 7V12"
+                />
+              </svg>
+            </Link>
+
+            <button
+              type="button"
+              onClick={onPrimary}
+              className="flex w-full items-center justify-center gap-2 rounded-full bg-brand px-9 py-4 text-lg font-semibold text-white shadow-sm transition hover:bg-brand-dark sm:w-auto"
+            >
+              Start Trading
+              <svg
+                className="h-5 w-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                aria-hidden="true"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M21 21l-4.35-4.35M17 11a6 6 0 11-12 0 6 6 0 0112 0z"
+                />
+              </svg>
+            </button>
+          </div>
+
+          <p className="mt-5 text-sm text-gray-500 sm:text-base">
+            No demat account hassle. Zero platform fee. Backed by real-time research.
+          </p>
         </div>
 
-        <h1 className="mt-6 text-8xl md:text-7xl font-extrabold tracking-tight text-ink">
-          Trade today.
-          <br />
-          <span className="italic font-semibold text-gray-400">Grow </span>
-          in the <span className="text-brand">future.</span>
-        </h1>
-
-        <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
-          <Link
-            to="/stocks"
-            className="px-9 py-4 rounded-full font-semibold text-lg text-brand border-2 border-brand hover:bg-brand-light transition flex items-center gap-2"
-          >
-            Explore Markets
-            <svg className="h-4 w-4" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="2">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M7 13L13 7M13 7H8M13 7V12" />
-            </svg>
-          </Link>
-          <button
-            onClick={onPrimary}
-            className="px-9 py-4 rounded-full font-semibold text-lg text-white bg-brand hover:bg-brand-dark transition shadow-sm flex items-center gap-2"
-          >
-            Start Trading
-            <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-4.35-4.35M17 11a6 6 0 11-12 0 6 6 0 0112 0z" />
-            </svg>
-          </button>
+        {/* Financial city illustration replaces the six stock cards */}
+        <div className="relative mx-auto mt-6 w-full max-w-6xl sm:mt-8 lg:mt-10">
+          <img
+            src="/primebulls-city.png"
+            alt="Primebulls financial city featuring trading dashboards, investment buildings, market charts and a rising bull"
+            fetchPriority="high"
+            decoding="async"
+            draggable="false"
+            className="mx-auto block h-auto w-full select-none object-contain"
+          />
         </div>
-        <p className="mt-5 text-base text-gray-500">
-          No demat account hassle. Zero platform fee. Backed by real-time research.
-        </p>
-      </div>
 
-      {/* Card row echoing Featured Products / Best Sellers / Best Deals — the middle
-          column sits in a raised frame with a floating pill label, side columns are
-          plain left/right-aligned headings, exactly like the reference layout */}
-      <div className="max-w-5xl mx-auto px-4 mt-16 grid grid-cols-1 sm:grid-cols-3 gap-6 items-start">
-        {HERO_CARDS.map(col => {
-          const headingAlign =
-            col.align === "left" ? "text-left" : col.align === "center" ? "text-center" : "text-right";
+        {/* Bottom highlights */}
+        <div className="mx-auto flex max-w-3xl flex-wrap items-center justify-center gap-x-5 gap-y-3 pt-3 pb-6 sm:gap-x-8 sm:pb-10">
+          <span className="flex items-center gap-2 text-xs font-medium text-gray-500 sm:text-sm">
+            <span className="h-2 w-2 rounded-full bg-brand" />
+            Market insights
+          </span>
 
-          const cardList = (
-            <div className="space-y-4">
-              {col.items.map(item => (
-                <Link
-                  key={item.name}
-                  to="/stocks"
-                  className="flex items-center justify-between gap-4 bg-brand-100 hover:bg-brand-200/70 transition rounded-2xl px-5 py-4"
-                >
-                  <span className="text-left">
-                    <span className="block font-bold text-ink text-base leading-snug">{item.name}</span>
-                    <span className="block text-sm text-gray-500 mt-1">{item.meta}</span>
-                  </span>
-                  <span
-                    className={`h-20 w-20 rounded-full ${item.color} flex items-center justify-center text-4xl flex-shrink-0 shadow-sm ring-4 ring-white`}
-                  >
-                    {item.icon}
-                  </span>
-                </Link>
-              ))}
-            </div>
-          );
+          <span className="flex items-center gap-2 text-xs font-medium text-gray-500 sm:text-sm">
+            <span className="h-2 w-2 rounded-full bg-emerald-500" />
+            Informed investing
+          </span>
 
-          if (col.featured) {
-            return (
-              <div key={col.heading} className="relative pt-6">
-                <span className="absolute top-0 left-1/2 -translate-x-1/2 bg-white border border-gray-200 rounded-full px-5 py-2 text-base font-semibold text-ink shadow-sm z-10 whitespace-nowrap">
-                  {col.heading}
-                </span>
-                <div className="bg-gray-100/80 rounded-3xl pt-12 pb-6 px-4 sm:-mt-4">
-                  {cardList}
-                </div>
-              </div>
-            );
-          }
-
-          return (
-            <div key={col.heading} className="pt-6 sm:pt-9">
-              <p className={`text-base font-semibold text-gray-500 mb-4 ${headingAlign}`}>{col.heading}</p>
-              {cardList}
-            </div>
-          );
-        })}
+          <span className="flex items-center gap-2 text-xs font-medium text-gray-500 sm:text-sm">
+            <span className="h-2 w-2 rounded-full bg-blue-500" />
+            Financial growth
+          </span>
+        </div>
       </div>
     </section>
   );
 }
+
 
 // ── How it Works ─────────────────────────────────────────────
 const STEPS = [

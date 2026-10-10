@@ -208,12 +208,12 @@ function HowItWorks() {
 
 // ── Pick Your Investments ─────────────────────────────────────
 const INVESTMENTS = [
-  { label: "Stocks", icon: "📈", desc: "Buy and sell shares in companies to grow wealth.", href: "/stocks" },
-  { label: "IPO", icon: "🏢", desc: "Participate in Initial Public Offerings and invest early.", href: "#" },
-  { label: "F&O", icon: "⚖️", desc: "Trade in futures and options to manage risk or speculate.", href: "#" },
-  { label: "Mutual Funds", icon: "🧺", desc: "Invest in diversified portfolios managed by professionals.", href: "#" },
-  { label: "US Stocks", icon: "🌎", desc: "Invest in top US companies from India.", href: "#" },
-  { label: "Bonds", icon: "📜", desc: "Fixed income securities for stable returns.", href: "#" },
+  { label: "Stocks",       img: "/images/investments/stocks.jpg",       desc: "Buy and sell shares in companies to grow wealth.",          href: "/stocks" },
+  { label: "IPO",          img: "/images/investments/ipo.jpg",          desc: "Participate in Initial Public Offerings and invest early.", href: "#" },
+  { label: "F&O",          img: "/images/investments/fno.jpg",          desc: "Trade in futures and options to manage risk or speculate.", href: "#" },
+  { label: "Mutual Funds", img: "/images/investments/mutual-funds.jpg", desc: "Invest in diversified portfolios managed by professionals.", href: "#" },
+  { label: "US Stocks",    img: "/images/investments/us-stocks.jpg",    desc: "Invest in top US companies from India.",                    href: "#" },
+  { label: "Bonds",        img: "/images/investments/bonds.jpg",        desc: "Fixed income securities for stable returns.",               href: "#" },
 ];
 
 function InvestmentsSection() {
@@ -221,32 +221,42 @@ function InvestmentsSection() {
     <section id="markets" className="max-w-6xl mx-auto px-4 py-20">
       <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-12">
         <div>
-          <span className="inline-block border border-gray-200 rounded-full px-4 py-1.5 text-sm font-medium text-gray-500 mb-4">Investment Options</span>
+          <span className="inline-block border border-gray-200 rounded-full px-4 py-1.5 text-sm font-medium text-gray-500 mb-4">
+            Investment Options
+          </span>
           <h2 className="text-4xl md:text-5xl font-extrabold text-ink max-w-xl">
             Pick your <span className="italic font-light text-gray-400">preferred</span> investments
           </h2>
         </div>
-        <Link to="/stocks" className="hidden md:inline-flex items-center gap-2 px-6 py-3.5 border-2 border-brand text-brand rounded-full text-base font-semibold hover:bg-brand-light transition self-start">
+        <Link
+          to="/stocks"
+          className="hidden md:inline-flex items-center gap-2 px-6 py-3.5 border-2 border-brand text-brand rounded-full text-base font-semibold hover:bg-brand-light transition self-start"
+        >
           Explore Markets
         </Link>
       </div>
+
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-        {INVESTMENTS.map(inv => {
+        {INVESTMENTS.map((inv) => {
           const cardClass =
             "border border-gray-200 rounded-2xl p-7 hover:border-brand hover:shadow-sm transition block";
           const cardContent = (
             <>
-              <div className="h-14 w-14 rounded-xl bg-brand-light flex items-center justify-center text-2xl mb-4">
-                {inv.icon}
+              {/* overflow-hidden clips the image to the rounded box;
+                  object-cover makes it fill the whole box */}
+              <div className="h-20 w-20 rounded-xl bg-white overflow-hidden mb-4">
+                <img
+                  src={inv.img}
+                  alt={inv.label}
+                  className="w-full h-full object-cover"
+                  loading="lazy"
+                />
               </div>
               <h3 className="font-bold text-ink text-lg mb-2">{inv.label}</h3>
               <p className="text-gray-500 text-base">{inv.desc}</p>
             </>
           );
 
-          // Internal routes (e.g. "/stocks") use React Router's Link for
-          // client-side navigation; anything else (still "#" for now)
-          // falls back to a plain anchor.
           return inv.href.startsWith("/") ? (
             <Link key={inv.label} to={inv.href} className={cardClass}>
               {cardContent}
@@ -261,17 +271,16 @@ function InvestmentsSection() {
     </section>
   );
 }
-
 // ── Best Insurance ───────────────────────────────────────────
 const INSURANCE = [
-  { img: "/icons/gr__3_.png", icon: "❤️", sub: "Lowest Price Guarantee", label: "Term Life Insurance", badge: "Covers Covid-19" },
+  { img: "/family.png", icon: "❤️", sub: "Lowest Price Guarantee", label: "Term Life Insurance", badge: "Covers Covid-19" },
   { img: "/health-insurance.png", icon: "🏥", sub: "FREE Home Visit", label: "Health Insurance", badge: "Covers Covid-19" },
   { img: "/report.png", icon: "📈", sub: "In-Built Life Cover", label: "Investment Plans", badge: "Save Tax" },
   { img: "/insurance.png", icon: "🚗", sub: "Upto 91% Discount", label: "Car Insurance", badge: "Instant Policy" },
   { img: "/bike.png", icon: "🏍️", sub: "Upto 85% Discount", label: "2 Wheeler Insurance", badge: "Instant Policy" },
   { img: "gr (3).png", icon: "📄", sub: "Upto 85% Discount", label: "Term Plans with Return of Premium", badge: null },
   { img: "/gr (2).png", icon: "🎯", sub: "Upto 85% Discount", label: "Guaranteed Return Plans", badge: null },
-  { img: null, icon: "👩", sub: "Upto 20% Cheaper", label: "Term Insurance (Women)", badge: null },
+  { img: "/women.png", icon: "👩", sub: "Upto 20% Cheaper", label: "Term Insurance (Women)", badge: null },
 ];
 
 function InsuranceSection() {
@@ -392,12 +401,12 @@ function TradingSection() {
 }
 // ── Key Benefits ─────────────────────────────────────────────
 const BENEFITS = [
-  { icon: "⚡", title: "Instant account opening", desc: "Get onboarded digitally in minutes — no branch visits, no waiting." },
-  { icon: "📈", title: "Real-time market data", desc: "Live prices and charts across NSE & BSE to help you act fast." },
-  { icon: "💸", title: "Zero platform fee", desc: "Trade delivery equity without paying a recurring platform charge." },
-  { icon: "🛡️", title: "Secure & regulated", desc: "SEBI-registered, with your holdings safely tracked in your demat." },
-  { icon: "🧮", title: "Built-in SIP tools", desc: "Plan and project your mutual fund SIPs with our calculator." },
-  { icon: "🎧", title: "Dedicated support", desc: "Reach a real person over chat, call, or WhatsApp when you need help." },
+  { img: "/phone.png", title: "Instant account opening", desc: "Get onboarded digitally in minutes — no branch visits, no waiting." },
+  { img: "/monitor.png",     title: "Real-time market data",   desc: "Live prices and charts across NSE & BSE to help you act fast." },
+  { img: "/zerofees.png",        title: "Zero platform fee",       desc: "Trade delivery equity without paying a recurring platform charge." },
+  { img: "/shield.png",          title: "Secure & regulated",      desc: "SEBI-registered, with your holdings safely tracked in your demat." },
+  { img: "/sip.png",       title: "Built-in SIP tools",      desc: "Plan and project your mutual fund SIPs with our calculator." },
+  { img: "/callgirl.png",         title: "Dedicated support",       desc: "Reach a real person over chat, call, or WhatsApp when you need help." },
 ];
 
 function KeyBenefits() {
@@ -407,14 +416,29 @@ function KeyBenefits() {
         <h2 className="text-4xl md:text-5xl font-extrabold text-ink max-w-xl">
           The smartest way <span className="italic font-light text-gray-400">to</span> trade &amp; grow wealth
         </h2>
-        <Link to="/stocks" className="hidden md:inline-flex items-center gap-2 px-6 py-3.5 border-2 border-brand text-brand rounded-full text-base font-semibold hover:bg-brand-light transition self-start">
+        <Link
+          to="/stocks"
+          className="hidden md:inline-flex items-center gap-2 px-6 py-3.5 border-2 border-brand text-brand rounded-full text-base font-semibold hover:bg-brand-light transition self-start"
+        >
           Explore Markets
         </Link>
       </div>
+
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-        {BENEFITS.map(b => (
-          <div key={b.title} className="border border-gray-200 rounded-2xl p-7 hover:border-brand hover:shadow-sm transition">
-            <div className="h-14 w-14 rounded-xl bg-brand-light flex items-center justify-center text-2xl mb-4">{b.icon}</div>
+        {BENEFITS.map((b) => (
+          <div
+            key={b.title}
+            className="border border-gray-200 rounded-2xl p-7 hover:border-brand hover:shadow-sm transition"
+          >
+            {/* Image container: overflow-hidden clips the image to the rounded box */}
+            <div className="h-20 w-20 rounded-xl bg-white overflow-hidden mb-4">
+              <img
+                src={b.img}
+                alt={b.title}
+                className="w-full h-full object-cover"
+                loading="lazy"
+              />
+            </div>
             <h3 className="font-bold text-ink text-lg mb-2">{b.title}</h3>
             <p className="text-gray-500 text-base">{b.desc}</p>
           </div>

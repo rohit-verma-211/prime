@@ -208,12 +208,12 @@ function HowItWorks() {
 
 // ── Pick Your Investments ─────────────────────────────────────
 const INVESTMENTS = [
-  { label: "Stocks",       img: "/images/investments/stocks.jpg",       desc: "Buy and sell shares in companies to grow wealth.",          href: "/stocks" },
-  { label: "IPO",          img: "/images/investments/ipo.jpg",          desc: "Participate in Initial Public Offerings and invest early.", href: "#" },
-  { label: "F&O",          img: "/images/investments/fno.jpg",          desc: "Trade in futures and options to manage risk or speculate.", href: "#" },
-  { label: "Mutual Funds", img: "/images/investments/mutual-funds.jpg", desc: "Invest in diversified portfolios managed by professionals.", href: "#" },
-  { label: "US Stocks",    img: "/images/investments/us-stocks.jpg",    desc: "Invest in top US companies from India.",                    href: "#" },
-  { label: "Bonds",        img: "/images/investments/bonds.jpg",        desc: "Fixed income securities for stable returns.",               href: "#" },
+  { label: "Stocks",       img: "/monitor.png",       desc: "Buy and sell shares in companies to grow wealth.",          href: "/stocks" },
+  { label: "IPO",          img: "/ipo.png",          desc: "Participate in Initial Public Offerings and invest early.", href: "#" },
+  { label: "F&O",          img: "/paisa.png",          desc: "Trade in futures and options to manage risk or speculate.", href: "#" },
+  { label: "Mutual Funds", img: "/groeth.png", desc: "Invest in diversified portfolios managed by professionals.", href: "#" },
+  { label: "US Stocks",    img: "/us.png",    desc: "Invest in top US companies from India.",                    href: "#" },
+  { label: "Bonds",        img: "/bond.png",        desc: "Fixed income securities for stable returns.",               href: "#" },
 ];
 
 function InvestmentsSection() {
